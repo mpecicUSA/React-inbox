@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Toolbar from "./component/toolbar";
+import MessageList from "./component/messageList"
 import './App.css';
 
 class App extends Component {
+  state = {
+    emails: []
+  }
+  async componentDidMount(){
+    const response = await fetch('http://localhost:8082/api/messages')
+    const json = await response.json()
+    this.setState({emails: json})
+  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Toolbar />
+        <MessageList emails={this.state.emails} />
       </div>
     );
   }
