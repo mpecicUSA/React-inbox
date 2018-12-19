@@ -3,7 +3,6 @@ import Message from "./message"
 
 class MessageList extends React.Component {
     render(){
-        console.log(this.props.emails)
         let messagesMap = this.props.emails.map(email => <Message key={email.id} value={email}/>)
         return(
             <>

@@ -2,8 +2,7 @@ import React from "react"
 
 class Message extends React.Component {
     render(){
-        console.log(this.props.value.read);
-        console.log(`row message ${this.props.value.read ? "read" :  "unread" }` )
+        console.log(this.props.value)
         return (
         <div className={`row message ${this.props.value.read ? "read" :  "unread" }`}>
         {/* <div class="row message read"> */}
@@ -11,14 +10,15 @@ class Message extends React.Component {
         <div className="col-xs-1">
             <div className="row">
             <div className="col-xs-2">
-                <input type="checkbox" />
+                <input type='checkbox'/>
             </div>
             <div className="col-xs-2">
-                <i className="star fa fa-star-o"></i>
+                <i className={this.props.value.starred ? "star fa fa-star" : "star fa fa-star-o"}></i>
             </div>
             </div>
         </div>
         <div className="col-xs-11">
+            {this.props.value.labels.length >= 1 ? this.props.value.labels.map(item => <span className="label label-warning"> {item} </span> )  : ""}
             <a href="#">
                 {this.props.value.subject}
             </a>

@@ -2,14 +2,15 @@ import React from 'react'
 
 class Toolbar extends React.Component {
     render(){
-        return(<div className="row toolbar">
-  <div className="col-md-12">
-    <p className="pull-right">
-      <span className="badge badge">2</span>
-      unread messages
-    </p>
+        return(
+        <div className="row toolbar">
+          <div className="col-md-12">
+            <p className="pull-right">
+            <span className="badge badge">2</span>
+              unread messages
+            </p>
 
-    <a className="btn btn-danger">
+        <a className="btn btn-danger">
       <i className="fa fa-plus"></i>
     </a>
 
