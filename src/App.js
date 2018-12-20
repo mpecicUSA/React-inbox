@@ -37,14 +37,31 @@ console.log(idOfObjectToBeUpdated, theKeyToBeUpdated);
     }
   })
 }
-  updateCheckBoxStatus = (checkBoxId)=>{
-    console.log(checkBoxId)
-  }
+updateAllKeysInState = (theKeyToBeUpdated) => { 
+  console.log("State of emails onclick",this.state.emails);
+  this.setState(prevState => {
+    return {
+      emails: prevState.emails.reduce((acc, email) => {
+        // insert logic to only change all if all are same else update all to selected if only some are selected 
+          return [
+            ...acc,
+            {
+              ...email,
+              [theKeyToBeUpdated]: !email[theKeyToBeUpdated]
+            }
+          ]
+      }, [])
+    }
+  })
+  console.log("state of emails after state update", this.state.emails);
+  console.log("THIS IS THE THE KEY TO UPDATED", theKeyToBeUpdated)
+  console.log("THIS IS THE MAP", this.state.emails.filter(email => email.checked ))
+}
   render() {
     return (
       <div className="App">
         <div className="container">
-          <Toolbar emails={this.state.emails}/>
+          <Toolbar updateKeyInState={this.updateAllKeysInState} emails={this.state.emails}/>
           <MessageList emails={this.state.emails} updateKeyInState={this.updateKeyInState} />
         </div>
       </div>
