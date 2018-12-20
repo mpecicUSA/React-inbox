@@ -3,7 +3,7 @@ import React from "react"
 class Message extends React.Component {
     render(){
         let updaterFunction = e => {
-            this.props.updateKeyInState(this.props.value.id, e.target.attributes.value.nodeValue)
+            this.props.toggleEmailValue(this.props.value.id, e.target.attributes.value.nodeValue)
         }
 
         return (

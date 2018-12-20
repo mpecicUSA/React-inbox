@@ -5,60 +5,67 @@ class Toolbar extends React.Component {
   // selectAll = () => {
   //   this.props.emails.filter(email => email.checked ==true).length
   // }
-  
-  render(){
-      // console.log(this.props.emails.filter(email => email.checked == true))
-      let emails = this.props.emails
-      let numberOfEmailsChecked = emails.filter(email => email.checked).length
-      let shouldButtonBeDisabled = numberOfEmailsChecked == 0 ? "disabled" : ""
-      let passingItAlong = (e) => {
-          this.props.updateKeyInState(e.target.attributes.value.nodeValue)
+  state = {
+    selectAll: false
+  }
+  _onSelectAllClick = e => {
+    this.props.updateAll("checked", !this.state.selectAll)
+    this.setState(state => {
+      return {
+        selectAll: !state.selectAll
       }
-        return(
-          <div className="row toolbar">
-          <div className="col-md-12">
-            <p className="pull-right">
-              <span className="badge badge">{this.props.emails.filter(email => email.read ==true).length}</span>
-              unread messages
+    })
+  }
+  render() {
+    // console.log(this.props.emails.filter(email => email.checked == true))
+    let emails = this.props.emails
+    let numberOfEmailsChecked = emails.filter(email => email.checked).length
+    let shouldButtonBeDisabled = numberOfEmailsChecked == 0 ? "disabled" : ""
+    return (
+      <div className="row toolbar">
+        <div className="col-md-12">
+          <p className="pull-right">
+            <span className="badge badge">{this.props.emails.filter(email => email.read == true).length}</span>
+            unread messages
             </p>
-            {/* Compose new message */}
-            <a className="btn btn-danger">
-              <i className="fa fa-plus"></i>
-            </a>
-        {/* select / Deselect  */}
-            <button onClick={passingItAlong} value="checked" className="btn btn-default">
-              <i className={numberOfEmailsChecked == 0 ? "fa fa-square-o" : numberOfEmailsChecked < emails.length ? "fa fa-minus-square-o" : numberOfEmailsChecked == emails.length ? "fa fa-check-square-o" : ""}></i>
+          {/* Compose new message */}
+          <a className="btn btn-danger">
+            <i className="fa fa-plus"></i>
+          </a>
+          {/* select / Deselect  */}
+          <button onClick={this._onSelectAllClick}  className="btn btn-default">
+            <i className={numberOfEmailsChecked == 0 ? "fa fa-square-o" : numberOfEmailsChecked < emails.length ? "fa fa-minus-square-o" : numberOfEmailsChecked == emails.length ? "fa fa-check-square-o" : ""}></i>
+          </button>
+          {/* mark as read */}
+          <button className="btn btn-default" disabled={shouldButtonBeDisabled}>
+            Mark As Read
             </button>
-        {/* mark as read */}
-            <button className="btn btn-default" disabled={shouldButtonBeDisabled}>
-              Mark As Read
+          {/* Mark as unread */}
+          <button className="btn btn-default" disabled={shouldButtonBeDisabled}>
+            Mark As Unread
             </button>
-        {/* Mark as unread */}
-            <button className="btn btn-default" disabled={shouldButtonBeDisabled}>
-              Mark As Unread
-            </button>
-        {/* add label; */}
-            <select className="form-control label-select" disabled={shouldButtonBeDisabled}>
-              <option>Apply label</option>
-              <option value="dev">dev</option>
-              <option value="personal">personal</option>
-              <option value="gschool">gschool</option>
-            </select>
-        {/* remove label */}
-            <select className="form-control label-select" disabled={shouldButtonBeDisabled}>
-              <option>Remove label</option>
-              <option value="dev">dev</option>
-              <option value="personal">personal</option>
-              <option value="gschool">gschool</option>
-            </select>
-        {/* trash can  */}
-            <button className="btn btn-default" disabled={shouldButtonBeDisabled}>
-              <i className="fa fa-trash-o"></i>
-            </button>
-          </div>
+          {/* add label; */}
+          <select className="form-control label-select" disabled={shouldButtonBeDisabled}>
+            <option>Apply label</option>
+            <option value="dev">dev</option>
+            <option value="personal">personal</option>
+            <option value="gschool">gschool</option>
+          </select>
+          {/* remove label */}
+          <select className="form-control label-select" disabled={shouldButtonBeDisabled}>
+            <option>Remove label</option>
+            <option value="dev">dev</option>
+            <option value="personal">personal</option>
+            <option value="gschool">gschool</option>
+          </select>
+          {/* trash can  */}
+          <button className="btn btn-default" disabled={shouldButtonBeDisabled}>
+            <i className="fa fa-trash-o"></i>
+          </button>
         </div>
+      </div>
 
-            )
-    }
+    )
+  }
 }
 export default Toolbar
