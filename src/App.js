@@ -12,10 +12,11 @@ class App extends Component {
   async componentDidMount() {
     const response = await fetch('http://localhost:8082/api/messages')
     const json = await response.json()
-    const addChecked = json.map(email => ({ ...email, checked: false }))
+    const addChecked = json.map(email => ({ ...email, checked: false, deleted: false }))
     this.setState({ emails: addChecked })
   }
   updateAll = (key, value) => {
+    // This is the function to update all or some to checked or deselected
     this.setState(state => {
       return {
         emails: state.emails.map(email => {
@@ -27,7 +28,68 @@ class App extends Component {
       }
     })
   }
+  // toggle multiple emails to mark as read based on id 
+  // No need to filter through as objects are already updated to show true under selected. 
+  markReadStatus = (readOrUnread) => {
+    let trueFalse = readOrUnread == "true" ? true : false
+    console.log(trueFalse)
+    this.setState(prevState => ({
+      emails: prevState.emails.reduce((acc, email) => {
+        if(email.checked === true ){
+          return [
+            ...acc, 
+            {
+              ...email, 
+              read: trueFalse
+            }
+          ]
+        }
+        return [...acc, email]
+      },[])
+    }))
+  }
+  deleteEmail = () => {
+    this.setState(prevState => ({
+      emails: prevState.emails.reduce((acc, email )=> {
+        if(email.checked === true){
+          return [
+            ...acc, 
+            {
+              ...email, 
+              deleted: true
+            }
+          ]
+        }
+        return [...acc, email]
+      }, [])
+    }))
+  }
+  addLabel = (valueOfItemSelected) => {
+    console.log(valueOfItemSelected)
+    this.setState(prevState => ({
+      emails: prevState.emails.reduce((acc,email) => {
+        if(email.checked){
+          if(email.labels.indexOf(valueOfItemSelected) > -1 === false){
+          console.log(acc, "this is the ...acc")
+          console.log(email, "this is the email")
+          return [
+            ...acc, 
+            {
+              ...email, 
+              labels: [...email.labels,valueOfItemSelected]
+            }
+          ]
+        }
+      }
+        return [...acc, email]
+      }, [])
+    }))
+  }
+  removeLabel = () => {
+    console.log("Hello")
+  }
   toggleEmailValue = (id, key) => {
+    // This is the function to update individual email keys 
     this.setState(prevState => ({
       emails: prevState.emails.reduce((acc, email) => {
         if (email.id == id) {
@@ -47,7 +109,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <Toolbar updateAll={this.updateAll} emails={this.state.emails} />
+          <Toolbar updateAll={this.updateAll} removeLabel={this.removeLabel} addLabel={this.addLabel} deleteEmail={this.deleteEmail} markReadStatus={this.markReadStatus} emails={this.state.emails} />
           <MessageList emails={this.state.emails} toggleEmailValue={this.toggleEmailValue} />
         </div>
       </div>
