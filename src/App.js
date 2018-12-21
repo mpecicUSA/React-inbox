@@ -101,16 +101,14 @@ class App extends Component {
       const email = await response.json()
       this.setState({emails: [...this.state.emails, email]})
       this.setState(prevState => ({
-        //if ids 
         emails: prevState.emails.reduce((acc, email) => {
           if(ids.indexOf(email.id) === -1){
-            return 
-            [
+            return [
               ...acc, 
-              {email}
+              email
             ]
           }
-          return email
+          return acc
         }, [])
       }))
       console.log(response.ok)
