@@ -3,7 +3,12 @@ import Toolbar from "./component/toolbar";
 import MessageList from "./component/messageList"
 import './App.css';
 
+
+
+
+
 class App extends Component {
+
   // declare empty state:
   state = {
     emails: []
@@ -15,6 +20,22 @@ class App extends Component {
     const addChecked = json.map(email => ({ ...email, checked: false, deleted: false }))
     this.setState({ emails: addChecked })
   }
+  async createEmail() {
+    const response = await fetch('http://localhost:8082/api/messages', {
+      method: 'POST',
+      body: JSON.stringify({
+        subject: "",
+        body: ""
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+    const email = await response.json()
+    this.setState({emails: [...this.state.email, email]})
+  }
+
   updateAll = (key, value) => {
     // This is the function to update all or some to checked or deselected
     this.setState(state => {
@@ -65,13 +86,10 @@ class App extends Component {
     }))
   }
   addLabel = (valueOfItemSelected) => {
-    console.log(valueOfItemSelected)
     this.setState(prevState => ({
       emails: prevState.emails.reduce((acc,email) => {
         if(email.checked){
           if(email.labels.indexOf(valueOfItemSelected) > -1 === false){
-          console.log(acc, "this is the ...acc")
-          console.log(email, "this is the email")
           return [
             ...acc, 
             {
@@ -85,8 +103,24 @@ class App extends Component {
       }, [])
     }))
   }
-  removeLabel = () => {
-    console.log("Hello")
+  removeLabel = (labelToBeRemoved) => {
+    console.log(labelToBeRemoved)
+    this.setState(prevState => ({
+      emails: prevState.emails.reduce((acc,email) => {
+        if(email.checked){
+          if(email.labels.indexOf(labelToBeRemoved)> -1){
+            return [
+              ...acc,
+              {
+                ...email, 
+                labels: [...email.labels.filter(label => label != labelToBeRemoved )]
+              }
+            ]
+          }
+        }
+        return [...acc, email]
+      }, [])
+    }))
   }
   toggleEmailValue = (id, key) => {
     // This is the function to update individual email keys 

@@ -1,8 +1,10 @@
 import React from 'react'
+import NewMessage from "./newMessage"
 
 class Toolbar extends React.Component {
   state = {
-    selectAll: false
+    selectAll: false,
+    composeMessageClicked: false
   }
   _onSelectAllClick = e => {
     console.log(e.target.attributes.value.nodeValue, !this.state.selectAll);
@@ -23,7 +25,13 @@ class Toolbar extends React.Component {
     this.props.addLabel(e.target.attributes.value.nodeValue)
   }
   _removeLabel = (e) => {
-    this.props.removeLabel()
+    this.props.removeLabel(e.target.attributes.value.nodeValue)
+  }
+  _composeNewMessage = () => {
+    this.setState(prevState => ({
+      ...prevState, 
+      composeMessageClicked: true
+    }))
   }
   render() {
     // console.log(this.props.emails.filter(email => email.checked == true))
@@ -38,7 +46,7 @@ class Toolbar extends React.Component {
             unread messages
             </p>
           {/* Compose new message */}
-          <a className="btn btn-danger">
+          <a onClick={this._composeNewMessage}className="btn btn-danger">
             <i className="fa fa-plus"></i>
           </a>
           {/* select / Deselect  */}
@@ -63,17 +71,18 @@ class Toolbar extends React.Component {
           {/* remove label */}
           <select className="form-control label-select" disabled={shouldButtonBeDisabled}>
             <option >Remove label</option>
-            <option value="dev">dev</option>
-            <option value="personal">personal</option>
-            <option value="gschool">gschool</option>
+            <option onClick={this._removeLabel} value="dev">dev</option>
+            <option onClick={this._removeLabel} value="personal">personal</option>
+            <option onClick={this._removeLabel} value="gschool">gschool</option>
           </select>
           {/* trash can  */}
           <button className="btn btn-default" onClick={this._deleteEmail} disabled={shouldButtonBeDisabled}>
             <i className="fa fa-trash-o"></i>
           </button>
         </div>
+      {this.state.composeMessageClicked ? <NewMessage /> : null}
+        
       </div>
-
     )
   }
 }
