@@ -30,28 +30,28 @@ class Toolbar extends React.Component {
   _composeNewMessage = () => {
     this.setState(prevState => ({
       ...prevState, 
-      composeMessageClicked: true
+      composeMessageClicked: !prevState.composeMessageClicked
     }))
   }
   render() {
     // console.log(this.props.emails.filter(email => email.checked == true))
     let emails = this.props.emails
     let numberOfEmailsChecked = emails.filter(email => email.checked).length
-    let shouldButtonBeDisabled = numberOfEmailsChecked == 0 ? "disabled" : ""
+    let shouldButtonBeDisabled = numberOfEmailsChecked === 0 ? "disabled" : ""
     return (
       <div className="row toolbar">
         <div className="col-md-12">
           <p className="pull-right">
-            <span className="badge badge">{this.props.emails.filter(email => email.read == true).length}</span>
+            <span className="badge badge">{this.props.emails.filter(email => email.read === true).length}</span>
             unread messages
             </p>
           {/* Compose new message */}
-          <a onClick={this._composeNewMessage}className="btn btn-danger">
+          <a onClick={this._composeNewMessage} className="btn btn-danger">
             <i className="fa fa-plus"></i>
           </a>
           {/* select / Deselect  */}
           <button onClick={this._onSelectAllClick} value="checked"  className="btn btn-default">
-            <i className={numberOfEmailsChecked == 0 ? "fa fa-square-o" : numberOfEmailsChecked < emails.length ? "fa fa-minus-square-o" : numberOfEmailsChecked == emails.length ? "fa fa-check-square-o" : ""}></i>
+            <i className={numberOfEmailsChecked === 0 ? "fa fa-square-o" : numberOfEmailsChecked < emails.length ? "fa fa-minus-square-o" : numberOfEmailsChecked === emails.length ? "fa fa-check-square-o" : ""}></i>
           </button>
           {/* mark as read */}
           <button className="btn btn-default" onClick={this._markReadStatus} value="true" disabled={shouldButtonBeDisabled}>
@@ -80,7 +80,7 @@ class Toolbar extends React.Component {
             <i className="fa fa-trash-o"></i>
           </button>
         </div>
-      {this.state.composeMessageClicked ? <NewMessage /> : null}
+    {this.state.composeMessageClicked ? <NewMessage createEmail={this.props.createEmail} _composeNewMessage={this._composeNewMessage} /> : null}
         
       </div>
     )
