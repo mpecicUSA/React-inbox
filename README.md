@@ -12,13 +12,13 @@
 
 #### API Instructions
 
-...* Clone collective-API 
-...* npm i to install dependencies
-...* npm start 
+* Clone collective-API 
+* npm i to install dependencies
+* npm start 
 
 #### React-Inbox Instructions
 
-...* npm i
-...* npm start  
+* npm i
+* npm start  
 
 
